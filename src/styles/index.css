@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-wrapper {
+  padding-bottom: 55px;
+}
+
+.swiper-pagination {
+  text-align: right !important;
+  line-height: 1 !important;
+  bottom: 0 !important;
+}
+
+.swiper-pagination-bullet {
+  width: 26px !important;
+  height: 26px !important;
+  background-color: #007aff !important;
+  opacity: 1 !important;
+}
+
+.swiper-pagination-bullet.swiper-pagination-bullet-active {
+  width: 100px !important;
+  height: 26px !important;
+  border-radius: 13px;
+}
+
+.swiper-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet,
+ .swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet {
+  margin: 0 10px !important;
+}
+
+:root {
+  --animate-duration: 2.5s;
+  --animate-delay: 0.9s;
+}

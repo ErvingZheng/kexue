@@ -1,0 +1,16 @@
+{
+  "extends": [
+    // 引入vue3规则
+    "plugin:vue/vue3-recommended",
+    // 引入ts规则
+    "@vue/eslint-config-typescript",
+    // 关闭与prettier冲突的规则
+    "plugin:prettier/recommended"
+  ],
+  // 开启prettier，以eslint模式运行prettier，不符合prettier会标红
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": "error",
+    "vue/multi-word-component-names": "off"
+  }
+}
