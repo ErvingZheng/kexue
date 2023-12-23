@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, shallowRef } from 'vue';
+import { useAnimate } from '@vueuse/core';
+import type { MaybeElement } from '@vueuse/core';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -8,56 +10,87 @@ import { Pagination } from 'swiper/modules';
 const modules = [Pagination];
 
 const activeContentNav = ref(1);
+const side = ref();
 const contentNav = [
   {
     label: '情况概述',
     value: 1,
+    subtitle: 'Overview',
   },
   {
     label: '研究布局',
     value: 2,
+    subtitle: 'Research',
   },
   {
     label: '组织结构',
     value: 3,
+    subtitle: 'Organization',
   },
   {
     label: '总体目标',
     value: 4,
+    subtitle: 'Goals',
   },
   {
     label: '各院分布',
     value: 5,
+    subtitle: 'Departments',
   },
 ];
+const clickContentNav = (val) => {
+  activeContentNav.value = val;
+  side.value = contentNav.find((item) => item.value === val);
+};
 
 const activeFooterNav = ref(1);
+const current = ref({
+  label: '中心简介',
+  value: 1,
+  subtitle: 'Introduction',
+});
 const footerNav = [
   {
     label: '中心简介',
     value: 1,
+    subtitle: 'Introduction',
   },
   {
     label: '研发部',
     value: 2,
+    subtitle: 'Research Department',
   },
   {
-    label: '实验中心',
+    label: '公共实验平台',
     value: 3,
+    subtitle: 'Public Experimental Platform',
   },
   {
-    label: '艺术展厅',
+    label: '艺术中心',
     value: 4,
+    subtitle: 'Intelligent Art Center',
   },
   {
-    label: '会议区',
+    label: '会议中心',
     value: 5,
+    subtitle: 'Conference Center',
   },
 ];
+const clickFooterNav = (val) => {
+  activeFooterNav.value = val;
+  current.value = footerNav.find((item) => item.value === val);
+  play();
+};
 
-onMounted(() => {
-  // console.log(anime);
+const topTitle = shallowRef<MaybeElement>();
+const { play } = useAnimate(topTitle, [{ opacity: 0 }, { opacity: 1 }], {
+  duration: 500,
+  iterations: 1,
+  direction: 'alternate',
+  easing: 'cubic-bezier(0.46, 0.03, 0.52, 0.96)',
 });
+
+onMounted(() => {});
 </script>
 
 <template>
@@ -71,7 +104,9 @@ onMounted(() => {
       </div>
       <div class="content-right">
         <div class="content-right-bar">
-          <div class="content-right-bar-title">Introduction | 中心简介</div>
+          <div ref="topTitle" class="content-right-bar-title">
+            {{ current.subtitle }} | {{ current.label }}
+          </div>
           <img class="arrow-left" src="../../assets/arrow-left.png" alt="" />
         </div>
 
@@ -114,9 +149,14 @@ onMounted(() => {
             :class="{
               'content-nav-item-active': activeContentNav === item.value,
             }"
-            @click="activeContentNav = item.value"
+            @click="clickContentNav(item.value)"
           >
-            {{ item.label }}
+            <div class="content-nav-item-title">
+              {{ item.label }}
+            </div>
+            <div class="content-nav-item-subtitle">
+              {{ item.subtitle }}
+            </div>
           </div>
         </div>
       </div>
@@ -127,17 +167,28 @@ onMounted(() => {
           v-for="item in footerNav"
           :key="item.value"
           class="footer-nav-item"
-          :class="{
-            'footer-nav-item-active': activeFooterNav === item.value,
-          }"
-          @click="activeFooterNav = item.value"
         >
-          {{ item.label }}
+          <div
+            class="footer-nav-item-title"
+            :class="{
+              'footer-nav-item-title-active': activeFooterNav === item.value,
+            }"
+            @click="clickFooterNav(item.value)"
+          >
+            <span>
+              {{ item.label }}
+            </span>
+          </div>
+          <div class="footer-nav-item-subtitle">
+            {{ item.subtitle }}
+          </div>
         </div>
         <span class="footer-nav-item-seperator">|</span>
         <div class="footer-nav-item">
-          <img src="../../assets/icon/search.png" alt="" />
-          搜索
+          <div class="footer-nav-item-title">
+            <span> <img src="../../assets/icon/search.png" alt="" />查找 </span>
+          </div>
+          <div class="footer-nav-item-subtitle">Search</div>
         </div>
       </div>
     </div>
@@ -182,19 +233,37 @@ onMounted(() => {
   align-items: center;
   height: 100%;
 }
-.footer-nav-item {
+.footer-nav-item-title {
+  text-align: center;
+}
+.footer-nav-item-title span {
+  display: inline-block;
   color: #fff;
   font-size: 59px;
-  padding: 16px 38px;
+  line-height: 59px;
+  padding: 8px 38px;
   cursor: pointer;
   font-weight: bold;
-  display: flex;
-  align-items: center;
 
   transform: perspective(1px) translateZ(0);
   box-shadow: 0 0 1px rgba(0, 0, 0, 0);
   transition-duration: 0.3s;
   transition-property: border-radius;
+}
+.footer-nav-item-title-active span {
+  border-radius: 65px;
+  background-color: #fff;
+  color: #000;
+}
+.footer-nav-item + .footer-nav-item {
+  margin-left: 60px;
+}
+.footer-nav-item-subtitle {
+  font-size: 24px;
+  color: #bbb6e0;
+  line-height: 24px;
+  margin-top: 10px;
+  text-align: center;
 }
 .footer-nav-item-seperator {
   margin: 0 52px;
@@ -202,18 +271,13 @@ onMounted(() => {
   color: #fff;
 }
 .footer-nav-item img {
+  display: inline-block;
   width: 54px;
   height: 54px;
   margin-right: 33px;
+  vertical-align: top;
 }
-.footer-nav-item-active {
-  border-radius: 65px;
-  background-color: #fff;
-  color: #000;
-}
-.footer-nav-item + .footer-nav-item {
-  margin-left: 77px;
-}
+
 .content {
   display: flex;
 }
@@ -279,6 +343,7 @@ onMounted(() => {
 .news-text {
   margin-top: 42px;
   text-indent: 2em;
+  font-size: 32px;
 }
 .content-nav {
   position: absolute;
@@ -290,23 +355,23 @@ onMounted(() => {
   width: 100%;
   height: 150px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: #fff;
   border-radius: 0 20px 20px 0;
-  font-size: 54px;
-  font-weight: bold;
   cursor: pointer;
 
-  /* transform: perspective(1px) translateZ(0);
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-  position: relative;
-  transition-property: color;
-  transition-duration: 0.3s; */
   transform: perspective(1px) translateZ(0px);
   box-shadow: rgba(0, 0, 0, 0) 0px 0px 1px;
 }
-
+.content-nav-item-title {
+  font-size: 54px;
+  font-weight: bold;
+}
+.content-nav-item-subtitle {
+  font-size: 24px;
+}
 .content-nav-item-active {
   color: #fff;
   background: #2098d1;
