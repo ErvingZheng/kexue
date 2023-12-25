@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, shallowRef } from 'vue';
+import { ref, onMounted, shallowRef, reactive } from 'vue';
 import { useAnimate } from '@vueuse/core';
 import type { MaybeElement } from '@vueuse/core';
 import { Swiper, SwiperSlide } from 'swiper/vue';
@@ -84,11 +84,21 @@ const clickFooterNav = (val) => {
 
 const topTitle = shallowRef<MaybeElement>();
 const { play } = useAnimate(topTitle, [{ opacity: 0 }, { opacity: 1 }], {
-  duration: 500,
+  duration: 400,
   iterations: 1,
   direction: 'alternate',
   easing: 'cubic-bezier(0.46, 0.03, 0.52, 0.96)',
 });
+
+const form = reactive({
+  searchValue: '',
+});
+const inSearch = ref(false);
+
+function clickSearch() {
+  inSearch.value = true;
+  play();
+}
 
 onMounted(() => {});
 </script>
@@ -98,64 +108,85 @@ onMounted(() => {});
     <div class="header">
       <img src="../../assets/logo.png" class="logo" alt="" />
     </div>
+
     <div class="content">
       <div class="content-left">
         <img class="map" src="../../assets/map.png" alt="" />
+        <div class="content-left-description">
+          <div class="content-left-description-item">
+            <img src="../../assets/icon/current.png" alt="" /><span
+              >当前位置</span
+            >
+          </div>
+          <div class="content-left-description-item">
+            <img src="../../assets/icon/destination.png" alt="" /><span
+              >目标位置</span
+            >
+          </div>
+        </div>
       </div>
-      <div class="content-right">
+      <div v-if="!inSearch" class="content-right">
         <div class="content-right-bar">
           <div ref="topTitle" class="content-right-bar-title">
-            {{ current.subtitle }} | {{ current.label }}
+            <template v-if="!inSearch">
+              <span>{{ current.subtitle }}</span> |
+              <span>{{ current.label }}</span>
+            </template>
+            <template v-else>
+              <span>Search</span><el-input v-model="form.searchValue" />
+            </template>
           </div>
           <img class="arrow-left" src="../../assets/arrow-left.png" alt="" />
         </div>
 
-        <div id="new" class="animate__animated animate__fadeIn">
-          <swiper
-            :pagination="{
-              clickable: true,
-            }"
-            :modules="modules"
-          >
-            <swiper-slide>
-              <img src="../../assets/banner/news1.png" alt="" />
-            </swiper-slide>
-            <swiper-slide
-              ><img src="../../assets/banner/news1.png" alt=""
-            /></swiper-slide>
-            <swiper-slide
-              ><img src="../../assets/banner/news1.png" alt=""
-            /></swiper-slide>
-          </swiper>
-        </div>
+        <div class="news-container">
+          <div id="new" class="animate__animated animate__fadeIn">
+            <swiper
+              :pagination="{
+                clickable: true,
+              }"
+              :modules="modules"
+            >
+              <swiper-slide>
+                <img src="../../assets/banner/news1.png" alt="" />
+              </swiper-slide>
+              <swiper-slide
+                ><img src="../../assets/banner/news1.png" alt=""
+              /></swiper-slide>
+              <swiper-slide
+                ><img src="../../assets/banner/news1.png" alt=""
+              /></swiper-slide>
+            </swiper>
+          </div>
 
-        <div class="news-text">
-          <div>
-            为建设具有全国影响力的科技创新中心，大力实施国家“脑计划”战略，并落实重庆市政府工作为建设具有全国影响力的科技创新中心，报告精神，重庆南岸区、重庆经开区于2022年启动建立重庆脑与智能科学中心(简称重庆脑中心)。
-          </div>
-          <div>
-            重庆脑中心坐落在广阳湾智创生态城迎龙创新港，毗邻南山风景区和长江上游江心绿岛一广阳岛具有独特的生态自然景观和资源。一期规划近5万平方米实验载体，下辖“六院多中心”，到2035年建成实验室50个，集聚脑与智能领域高层次人才300名，争创觉醒睡眠与认知全国重点实验室。
-          </div>
-          <div>
-            重庆脑中心立足“四个面向”，聚焦觉醒和认知机理等基础研究，以此推动探索老年痴呆、卒中颤痛等重大疾病发病机理和防治策略，建立生物脑启发的人工智能技术。中心坚持十年一剑、集智攻关，围绕上述科学技术目标，将基础研究、应用基础研究、应用研究、成果转化、产业发展、国际交流、科学普及等多方面全链条融合，力争打造聚集“解读脑、康复脑、调控脑和模拟脑”为一体的综合性一流科学中心。
-          </div>
-        </div>
-
-        <div class="content-nav">
-          <div
-            v-for="item in contentNav"
-            :key="item.value"
-            class="content-nav-item"
-            :class="{
-              'content-nav-item-active': activeContentNav === item.value,
-            }"
-            @click="clickContentNav(item.value)"
-          >
-            <div class="content-nav-item-title">
-              {{ item.label }}
+          <div class="news-text">
+            <div>
+              为建设具有全国影响力的科技创新中心，大力实施国家“脑计划”战略，并落实重庆市政府工作为建设具有全国影响力的科技创新中心，报告精神，重庆南岸区、重庆经开区于2022年启动建立重庆脑与智能科学中心(简称重庆脑中心)。
             </div>
-            <div class="content-nav-item-subtitle">
-              {{ item.subtitle }}
+            <div>
+              重庆脑中心坐落在广阳湾智创生态城迎龙创新港，毗邻南山风景区和长江上游江心绿岛一广阳岛具有独特的生态自然景观和资源。一期规划近5万平方米实验载体，下辖“六院多中心”，到2035年建成实验室50个，集聚脑与智能领域高层次人才300名，争创觉醒睡眠与认知全国重点实验室。
+            </div>
+            <div>
+              重庆脑中心立足“四个面向”，聚焦觉醒和认知机理等基础研究，以此推动探索老年痴呆、卒中颤痛等重大疾病发病机理和防治策略，建立生物脑启发的人工智能技术。中心坚持十年一剑、集智攻关，围绕上述科学技术目标，将基础研究、应用基础研究、应用研究、成果转化、产业发展、国际交流、科学普及等多方面全链条融合，力争打造聚集“解读脑、康复脑、调控脑和模拟脑”为一体的综合性一流科学中心。
+            </div>
+          </div>
+
+          <div class="content-nav">
+            <div
+              v-for="item in contentNav"
+              :key="item.value"
+              class="content-nav-item"
+              :class="{
+                'content-nav-item-active': activeContentNav === item.value,
+              }"
+              @click="clickContentNav(item.value)"
+            >
+              <div class="content-nav-item-title">
+                {{ item.label }}
+              </div>
+              <div class="content-nav-item-subtitle">
+                {{ item.subtitle }}
+              </div>
             </div>
           </div>
         </div>
@@ -184,7 +215,7 @@ onMounted(() => {});
           </div>
         </div>
         <span class="footer-nav-item-seperator">|</span>
-        <div class="footer-nav-item">
+        <div class="footer-nav-item" @click="clickSearch">
           <div class="footer-nav-item-title">
             <span> <img src="../../assets/icon/search.png" alt="" />查找 </span>
           </div>
@@ -286,48 +317,65 @@ onMounted(() => {});
   width: 1140px;
   height: calc(100vh - 89px - 93px);
   border-radius: 10px;
-  /* background: url('../../assets/map-bg.png') no-repeat; */
-  /* background-size: cover; */
   margin-left: 20px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    rgba(77, 77, 210, 0.28) 50%,
+    #ffffff 100%
+  );
+  box-shadow: 0px 6px 49px 11px rgba(79, 77, 170, 0.28),
+    0px 4px 27px 0px rgba(98, 95, 240, 0.23);
   margin-left: 105px;
   margin-top: 89px;
   margin-right: 108px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 .map {
   position: absolute;
   display: block;
-  width: 1440px;
+  width: 1430px;
   height: 77%;
   max-width: unset;
   top: 250px;
   left: 50%;
-  transform: translateX(-49%);
+  transform: translateX(-48%);
+}
+.content-left-description {
+  margin: 0 0 80px 80px;
+}
+.content-left-description-item {
+  display: flex;
+  align-items: flex-end;
+}
+.content-left-description-item + .content-left-description-item {
+  margin-top: 16px;
+}
+.content-left-description-item img {
+  width: 49px;
+  height: 63px;
+  margin-right: 25px;
+}
+.content-left-description-item span {
+  font-size: 34px;
+  line-height: 36px;
 }
 .content-right {
-  width: 2050px;
-  height: calc(100vh - 246px - 275px);
-  border-radius: 10px;
-  /* background: url('../../assets/news-bg.png') no-repeat; */
-  /* background-size: 100% 100%; */
-  position: relative;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  margin-top: 246px;
-  padding: 0 210px 0 138px;
+  width: 2543px;
+  /* height: calc(100vh - 246px - 275px); */
+  margin-top: 141px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
 }
 .content-right-bar {
-  position: fixed;
   width: 2543px;
   height: 150px;
-  /* left: -10px; */
-  right: 0;
-  top: 140px;
-  /* background: url('../../assets/news-bar.png') no-repeat;
-  background-size: 100% 100%; */
-  background-color: #fff;
+  background: linear-gradient(90deg, #ffffff 0%, rgba(198, 210, 255, 0.2) 100%);
+  box-shadow: 0px 6px 49px 11px rgba(79, 77, 170, 0.28),
+    0px 4px 27px 0px rgba(98, 95, 240, 0.23);
   border-radius: 75px 0 0 75px;
   display: flex;
   align-items: center;
@@ -336,6 +384,33 @@ onMounted(() => {});
 .content-right-bar-title {
   flex: 1;
   font-size: 75px;
+}
+.content-right-bar-title span {
+  font-weight: bold;
+}
+.news-container {
+  position: relative;
+  width: 2049px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  box-shadow: 0px 6px 49px 11px rgba(79, 77, 170, 0.28),
+    0px 4px 27px 0px rgba(98, 95, 240, 0.31);
+  margin-left: 61px;
+  padding: 130px 136px 100px;
+  border-radius: 0 0 30px 30px;
+}
+.el-input {
+  width: 1000px;
+}
+:deep(.el-input__inner) {
+  height: 75px;
+  line-height: 75px;
+}
+:deep(.el-input__wrapper) {
+  border-radius: 38px;
 }
 .arrow-left {
   height: 74px;
@@ -358,8 +433,8 @@ onMounted(() => {});
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #fff;
-  border-radius: 0 20px 20px 0;
+  background-color: rgba(255, 255, 255, 0.77);
+  border-radius: 0 30px 30px 0;
   cursor: pointer;
 
   transform: perspective(1px) translateZ(0px);
@@ -374,7 +449,7 @@ onMounted(() => {});
 }
 .content-nav-item-active {
   color: #fff;
-  background: #2098d1;
+  background: linear-gradient(-90deg, #4e96fd 40%, #3d6dd0 100%);
 
   animation-name: hvr-wobble-vertical;
   animation-duration: 1s;
