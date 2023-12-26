@@ -140,35 +140,72 @@ onMounted(() => {});
         </div>
 
         <div class="news-container">
-          <div id="new" class="animate__animated animate__fadeIn">
-            <swiper
-              :pagination="{
-                clickable: true,
-              }"
-              :modules="modules"
-            >
-              <swiper-slide>
-                <img src="../../assets/banner/news1.png" alt="" />
-              </swiper-slide>
-              <swiper-slide
-                ><img src="../../assets/banner/news1.png" alt=""
-              /></swiper-slide>
-              <swiper-slide
-                ><img src="../../assets/banner/news1.png" alt=""
-              /></swiper-slide>
-            </swiper>
+          <div
+            v-if="activeContentNav === 1"
+            class="situation animate__animated animate__fadeIn"
+          >
+            <div id="new" class="">
+              <swiper
+                :pagination="{
+                  clickable: true,
+                }"
+                :modules="modules"
+              >
+                <swiper-slide>
+                  <img src="../../assets/banner/news1.jpg" alt="" />
+                </swiper-slide>
+                <swiper-slide
+                  ><img src="../../assets/banner/news2.jpg" alt=""
+                /></swiper-slide>
+                <swiper-slide
+                  ><img src="../../assets/banner/news3.jpg" alt=""
+                /></swiper-slide>
+              </swiper>
+            </div>
+
+            <div class="news-text">
+              <div>
+                为建设具有全国影响力的科技创新中心，大力实施国家“脑计划”战略，并落实重庆市政府工作为建设具有全国影响力的科技创新中心，报告精神，重庆南岸区、重庆经开区于2022年启动建立重庆脑与智能科学中心(简称重庆脑中心)。
+              </div>
+              <div>
+                重庆脑中心坐落在广阳湾智创生态城迎龙创新港，毗邻南山风景区和长江上游江心绿岛一广阳岛具有独特的生态自然景观和资源。一期规划近5万平方米实验载体，下辖“六院多中心”，到2035年建成实验室50个，集聚脑与智能领域高层次人才300名，争创觉醒睡眠与认知全国重点实验室。
+              </div>
+              <div>
+                重庆脑中心立足“四个面向”，聚焦觉醒和认知机理等基础研究，以此推动探索老年痴呆、卒中颤痛等重大疾病发病机理和防治策略，建立生物脑启发的人工智能技术。中心坚持十年一剑、集智攻关，围绕上述科学技术目标，将基础研究、应用基础研究、应用研究、成果转化、产业发展、国际交流、科学普及等多方面全链条融合，力争打造聚集“解读脑、康复脑、调控脑和模拟脑”为一体的综合性一流科学中心。
+              </div>
+            </div>
           </div>
 
-          <div class="news-text">
-            <div>
-              为建设具有全国影响力的科技创新中心，大力实施国家“脑计划”战略，并落实重庆市政府工作为建设具有全国影响力的科技创新中心，报告精神，重庆南岸区、重庆经开区于2022年启动建立重庆脑与智能科学中心(简称重庆脑中心)。
-            </div>
-            <div>
-              重庆脑中心坐落在广阳湾智创生态城迎龙创新港，毗邻南山风景区和长江上游江心绿岛一广阳岛具有独特的生态自然景观和资源。一期规划近5万平方米实验载体，下辖“六院多中心”，到2035年建成实验室50个，集聚脑与智能领域高层次人才300名，争创觉醒睡眠与认知全国重点实验室。
-            </div>
-            <div>
-              重庆脑中心立足“四个面向”，聚焦觉醒和认知机理等基础研究，以此推动探索老年痴呆、卒中颤痛等重大疾病发病机理和防治策略，建立生物脑启发的人工智能技术。中心坚持十年一剑、集智攻关，围绕上述科学技术目标，将基础研究、应用基础研究、应用研究、成果转化、产业发展、国际交流、科学普及等多方面全链条融合，力争打造聚集“解读脑、康复脑、调控脑和模拟脑”为一体的综合性一流科学中心。
-            </div>
+          <div v-if="activeContentNav === 2" class="layout">
+            <img
+              src="../../assets/banner/0102.png"
+              class="animate__animated animate__fadeIn"
+              alt=""
+            />
+          </div>
+
+          <div v-if="activeContentNav === 3" class="organization">
+            <img
+              src="../../assets/banner/0103.png"
+              class="animate__animated animate__fadeIn"
+              alt=""
+            />
+          </div>
+
+          <div v-if="activeContentNav === 4" class="goals">
+            <img
+              src="../../assets/banner/0104.png"
+              class="animate__animated animate__fadeIn"
+              alt=""
+            />
+          </div>
+
+          <div v-if="activeContentNav === 5" class="departments">
+            <img
+              src="../../assets/banner/0105.png"
+              class="animate__animated animate__fadeIn"
+              alt=""
+            />
           </div>
 
           <div class="content-nav">
@@ -390,6 +427,7 @@ onMounted(() => {});
 .news-container {
   position: relative;
   width: 2049px;
+  height: 1595px;
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0) 0%,
@@ -398,8 +436,23 @@ onMounted(() => {});
   box-shadow: 0px 6px 49px 11px rgba(79, 77, 170, 0.28),
     0px 4px 27px 0px rgba(98, 95, 240, 0.31);
   margin-left: 61px;
-  padding: 130px 136px 100px;
+  padding: 0 136px;
   border-radius: 0 0 30px 30px;
+}
+.situation {
+  padding-top: 130px;
+}
+.layout {
+  padding-top: 143px;
+}
+.organization {
+  padding-top: 233px;
+}
+.goals {
+  padding-top: 194px;
+}
+.departments {
+  padding-top: 157px;
 }
 .el-input {
   width: 1000px;
@@ -417,7 +470,7 @@ onMounted(() => {});
 .news-text {
   margin-top: 42px;
   text-indent: 2em;
-  font-size: 32px;
+  font-size: 33px;
 }
 .content-nav {
   position: absolute;
