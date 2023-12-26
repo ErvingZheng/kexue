@@ -78,7 +78,7 @@ const footerNav = [
 ];
 const clickFooterNav = (val) => {
   activeFooterNav.value = val;
-  current.value = footerNav.find((item) => item.value === val);
+  current.value = footerNav.find((item) => item.value === val)!;
   play();
 };
 
@@ -144,36 +144,61 @@ onMounted(() => {});
             v-if="activeContentNav === 1"
             class="situation animate__animated animate__fadeIn"
           >
-            <div id="new" class="">
-              <swiper
-                :pagination="{
-                  clickable: true,
-                }"
-                :modules="modules"
-              >
-                <swiper-slide>
-                  <img src="../../assets/banner/news1.jpg" alt="" />
-                </swiper-slide>
-                <swiper-slide
-                  ><img src="../../assets/banner/news2.jpg" alt=""
-                /></swiper-slide>
-                <swiper-slide
-                  ><img src="../../assets/banner/news3.jpg" alt=""
-                /></swiper-slide>
-              </swiper>
-            </div>
+            <el-scrollbar height="4.15365rem">
+              <div class="scroll-content">
+                <div id="new">
+                  <swiper
+                    :pagination="{
+                      clickable: true,
+                    }"
+                    :modules="modules"
+                  >
+                    <swiper-slide>
+                      <img src="../../assets/banner/news1.jpg" alt="" />
+                    </swiper-slide>
+                    <swiper-slide
+                      ><img src="../../assets/banner/news2.jpg" alt=""
+                    /></swiper-slide>
+                    <swiper-slide
+                      ><img src="../../assets/banner/news3.jpg" alt=""
+                    /></swiper-slide>
+                  </swiper>
+                </div>
 
-            <div class="news-text">
-              <div>
-                为建设具有全国影响力的科技创新中心，大力实施国家“脑计划”战略，并落实重庆市政府工作为建设具有全国影响力的科技创新中心，报告精神，重庆南岸区、重庆经开区于2022年启动建立重庆脑与智能科学中心(简称重庆脑中心)。
+                <div class="news-text">
+                  <div>
+                    为建设具有全国影响力的科技创新中心，大力实施国家“脑计划”战略，并落实重庆市政府工作为建设具有全国影响力的科技创新中心，报告精神，重庆南岸区、重庆经开区于2022年启动建立重庆脑与智能科学中心(简称重庆脑中心)。
+                  </div>
+                  <div>
+                    重庆脑中心坐落在广阳湾智创生态城迎龙创新港，毗邻南山风景区和长江上游江心绿岛一广阳岛具有独特的生态自然景观和资源。一期规划近5万平方米实验载体，下辖“六院多中心”，到2035年建成实验室50个，集聚脑与智能领域高层次人才300名，争创觉醒睡眠与认知全国重点实验室。
+                  </div>
+                  <div>
+                    重庆脑中心立足“四个面向”，聚焦觉醒和认知机理等基础研究，以此推动探索老年痴呆、卒中颤痛等重大疾病发病机理和防治策略，建立生物脑启发的人工智能技术。中心坚持十年一剑、集智攻关，围绕上述科学技术目标，将基础研究、应用基础研究、应用研究、成果转化、产业发展、国际交流、科学普及等多方面全链条融合，力争打造聚集“解读脑、康复脑、调控脑和模拟脑”为一体的综合性一流科学中心。
+                  </div>
+                  <div>
+                    The Chongqing City, the largest metropolitan administration
+                    in the world that serves more than 32 million people, is
+                    devoted to supporting brain research by founding a major
+                    multidisciplinary science and technology infrastructure
+                    since 2022, the Chongqing Institute for Brain and
+                    Intelligence (CIBI). On the 'bench side',CIBI investigates
+                    the fundamental mechanisms underlying sleep, wakefulness and
+                    memory, and develops brain-inspired artificial intelligence
+                    technologies. On the 'bedside', CIBI aims at advancing
+                    therapeutical technologies by pioneering deeper
+                    understanding of pathogenesis of major brain diseases,
+                    including Alzheimer's disease, stroke, and epilepsy.
+                    Furthermore, a complete chain of technology transfer 'from
+                    bench side to bedside' is furnished by attracting venture
+                    capital investments directly to each research team. Notably,
+                    CIBI offers funding schemes that support long-term
+                    single-goal research teams for 10 years and more, as
+                    depicted by an old Chinese saying, 'ten years to sharpen one
+                    sword.'
+                  </div>
+                </div>
               </div>
-              <div>
-                重庆脑中心坐落在广阳湾智创生态城迎龙创新港，毗邻南山风景区和长江上游江心绿岛一广阳岛具有独特的生态自然景观和资源。一期规划近5万平方米实验载体，下辖“六院多中心”，到2035年建成实验室50个，集聚脑与智能领域高层次人才300名，争创觉醒睡眠与认知全国重点实验室。
-              </div>
-              <div>
-                重庆脑中心立足“四个面向”，聚焦觉醒和认知机理等基础研究，以此推动探索老年痴呆、卒中颤痛等重大疾病发病机理和防治策略，建立生物脑启发的人工智能技术。中心坚持十年一剑、集智攻关，围绕上述科学技术目标，将基础研究、应用基础研究、应用研究、成果转化、产业发展、国际交流、科学普及等多方面全链条融合，力争打造聚集“解读脑、康复脑、调控脑和模拟脑”为一体的综合性一流科学中心。
-              </div>
-            </div>
+            </el-scrollbar>
           </div>
 
           <div v-if="activeContentNav === 2" class="layout">
@@ -436,23 +461,24 @@ onMounted(() => {});
   box-shadow: 0px 6px 49px 11px rgba(79, 77, 170, 0.28),
     0px 4px 27px 0px rgba(98, 95, 240, 0.31);
   margin-left: 61px;
-  padding: 0 136px;
   border-radius: 0 0 30px 30px;
 }
 .situation {
-  padding-top: 130px;
+}
+.scroll-content {
+  padding: 130px 206px 107px 136px;
 }
 .layout {
-  padding-top: 143px;
+  padding: 143px 102px 0 143px;
 }
 .organization {
-  padding-top: 233px;
+  padding: 233px 105px 0 66px;
 }
 .goals {
-  padding-top: 194px;
+  padding: 185px 150px 0 168px;
 }
 .departments {
-  padding-top: 157px;
+  padding: 157px 79px 0 70px;
 }
 .el-input {
   width: 1000px;
